@@ -5,6 +5,7 @@ find_package(ZLIB REQUIRED)
 
 pkg_check_modules(JSONCPP REQUIRED jsoncpp)
 pkg_check_modules(GSTREAMER REQUIRED gstreamer-1.0 gstreamer-app-1.0 gstreamer-video-1.0)
+pkg_check_modules(GPIOD REQUIRED libgpiod>=1.6)
 
 set(_ORBBEC_SDK_V2_ROOT
     "${CMAKE_SOURCE_DIR}/11_third_party/orbbec/linux_arm64/OrbbecSDK_v2.8.6")
@@ -69,6 +70,7 @@ add_executable(gemini_sender
     src/device_identity.cpp
     src/gst_h264_encoder.cpp
     src/gst_h264_rtp_sender.cpp
+    src/led_controller.cpp
     src/logger.cpp
     src/main.cpp
     src/network_utils.cpp
@@ -83,6 +85,7 @@ target_include_directories(gemini_sender PRIVATE
     "${ORBBEC_SDK_INCLUDE_DIR}"
     ${JSONCPP_INCLUDE_DIRS}
     ${GSTREAMER_INCLUDE_DIRS}
+    ${GPIOD_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
 )
 
@@ -90,12 +93,14 @@ target_link_directories(gemini_sender PRIVATE
     "${ORBBEC_SDK_LIBRARY_DIR}"
     ${JSONCPP_LIBRARY_DIRS}
     ${GSTREAMER_LIBRARY_DIRS}
+    ${GPIOD_LIBRARY_DIRS}
 )
 
 target_link_libraries(gemini_sender PRIVATE
     OrbbecSDK
     ${JSONCPP_LIBRARIES}
     ${GSTREAMER_LIBRARIES}
+    ${GPIOD_LIBRARIES}
     ${OpenCV_LIBS}
     JPEG::JPEG
     ZLIB::ZLIB
